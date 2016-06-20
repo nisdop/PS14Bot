@@ -18,9 +18,9 @@ WEBHOOK_URL_PATH = "/{}/".format(config.TOKEN)
 bot = telebot.TeleBot(config.TOKEN)
 
 
-@bot.message_handler(func=lambda message: True, content_types=['text'])
-def echo_message(message):
-    bot.reply_to(message, message.text)
+@bot.message_handler(func=lambda message: True, commands=['start'])
+def start_command(message):
+    bot.send_message(message.chat.id, 'You shall not pass!')
 
 
 bot.remove_webhook()
