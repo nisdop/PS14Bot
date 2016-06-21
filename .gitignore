@@ -3,3 +3,4 @@
 bot_env
 .idea
 config.py
+.DS_Store

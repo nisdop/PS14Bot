@@ -37,6 +37,10 @@ def send_statistic(message):
            "лета. Осталось проебать {}".format(days_spent, days_left)
     bot.send_message(message.chat.id, text)
 
+@bot.message_handler(func=lambda message: True, commands=['ban'])
+def send_statistic(message):
+    """BAN person for 5 minutes (or custom period of time)"""
+    pass
 
 bot.remove_webhook()
 bot.set_webhook(url=WEBHOOK_URL_BASE + WEBHOOK_URL_PATH,
