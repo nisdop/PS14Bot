@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+import datetime
+
 import telebot
 import cherrypy
-import config
 
+import config
 from server import WebhookServer
 
 WEBHOOK_HOST = config.SERVER_IP
@@ -21,6 +23,19 @@ bot = telebot.TeleBot(config.TOKEN)
 @bot.message_handler(func=lambda message: True, commands=['start'])
 def start_command(message):
     bot.send_message(message.chat.id, 'You shall not pass!')
+
+
+@bot.message_handler(func=lambda message: True, commands=['stat'])
+def send_statistic(message):
+    summer_days_count = 92
+    today = datetime.datetime.now()
+    deadline = today.replace(month=8, day=1, hour=0, minute=0)
+    delta_time = today - deadline
+    days_left = delta_time.days
+    days_spent = summer_days_count - days_left
+    text = "На данный момент уже благополучно проёбано {} дней " \
+           "лета. Осталось проебать {}".format(days_spent, days_left)
+    bot.send_message(message.chat.id, text)
 
 
 bot.remove_webhook()
