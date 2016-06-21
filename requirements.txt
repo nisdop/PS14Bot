@@ -1,10 +1,7 @@
-CherryPy==6.0.1
-pyTelegramBotAPI==2.1.4
-requests==2.10.0
-six==1.10.0
 amqp==1.4.9
 anyjson==0.3.3
 billiard==3.3.0.23
+celery==3.1.23
 CherryPy==6.0.1
 kombu==3.0.35
 pyTelegramBotAPI==2.1.4
