@@ -30,7 +30,7 @@ def send_statistic(message):
     summer_days_count = 92
     today = datetime.datetime.now()
     deadline = today.replace(month=8, day=1, hour=0, minute=0)
-    delta_time = today - deadline
+    delta_time = deadline - today
     days_left = delta_time.days
     days_spent = summer_days_count - days_left
     text = "На данный момент уже благополучно проёбано {} дней " \
