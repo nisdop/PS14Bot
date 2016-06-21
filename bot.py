@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 import datetime
 import random
+from urllib import request
 
 import telebot
 import cherrypy
+from bs4 import BeautifulSoup
 
 import config
 from server import WebhookServer
@@ -35,27 +37,20 @@ def send_statistic(message):
     days_left = delta_time.days
     days_spent = summer_days_count - days_left
     text = "На данный момент уже благополучно проёбано {} дней " \
-           "лета. Осталось проебать {}".format(days_spent, days_left)
+           "лета. Осталось проебать {}.".format(days_spent, days_left)
     bot.send_message(message.chat.id, text)
 
 
 @bot.message_handler(func=lambda message: True, commands=['tits'])
 def send_tits(message):
-    """Show me your kitis!"""
-    tits = [
-        "https://s-media-cache-ak0.pinimg.com/236x/b5/74/b1/b574b154616e8d0c6d76efaa9de3a0a9.jpg",
-        "https://s-media-cache-ak0.pinimg.com/236x/a2/2b/86/a22b863d140d6317e94232f5b9398845.jpg",
-        "http://thumbs.bignudeboobs.com/th/2016-01-19/333779_02.jpg",
-        "http://girl-tits.com/wp-content/uploads/2015/03/big-tits_-121.jpg",
-        "https://s-media-cache-ak0.pinimg.com/236x/7d/45/ca/7d45ca8f28308250170573ca5ff4672c.jpg",
-        "https://pp.vk.me/c627530/v627530910/1a8f0/ksAsOAjXys0.jpg",
-        "http://amateurinaction.com/wp-content/uploads/2012/04/photo-Babe-Big-Tits-Blonde-409014524.jpg",
-        "http://hotfmodels.com/wp-content/uploads/2013/10/tqJBLD0.jpg",
-        "http://boobs-selfshots.tumblr.com/post/146134834279",
-        "http://www.18porno.tv/contents/videos_screenshots/0/626/preview.mp4.jpg"
-    ]
-    rand = random.randint(0, len(tits) - 1)
-    bot.send_message(message.chat.id, tits[rand])
+    random_tits_url = 'http://boobs-selfshots.tumblr.com/random'
+    response = request.urlopen(random_tits_url)
+    html = response.read()
+    soup = BeautifulSoup(html)
+    img = soup.findAll('img', {'alt': 'boobs-selfshots.tumblr.com'})
+    link = img[0]['src']
+    bot.send_message(message.chat.id, link)
+
 
 bot.remove_webhook()
 bot.set_webhook(url=WEBHOOK_URL_BASE + WEBHOOK_URL_PATH,
