@@ -53,12 +53,8 @@ def send_tits(message):
     link = img[0]['src']
     bot.send_message(message.chat.id, link)
 
-@bot.message_handler(func=lambda message: True, commands=['/fuck_your_titis'])
-def remove_titis(message):
-	pass
-
 @bot.message_handler(func=lambda message: True, commands=['/ban'])
-def ban(message):
+def ban_user(message):
 	user_id = message.user.id
 	chat_id = message.chat.id
 	bot.kickChatMember(chat_id, user_id)
