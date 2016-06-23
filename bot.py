@@ -2,6 +2,7 @@
 import datetime
 import random
 from urllib import request
+from threading import Timer
 
 import telebot
 import cherrypy
@@ -21,6 +22,8 @@ WEBHOOK_URL_BASE = "https://{}:{}".format(WEBHOOK_HOST, WEBHOOK_PORT)
 WEBHOOK_URL_PATH = "/{}/".format(config.TOKEN)
 
 bot = telebot.TeleBot(config.TOKEN)
+
+banned_users =[]
 
 
 @bot.message_handler(func=lambda message: True, commands=['start'])
@@ -50,6 +53,28 @@ def send_tits(message):
     img = soup.findAll('img', {'alt': 'boobs-selfshots.tumblr.com'})
     link = img[0]['src']
     bot.send_message(message.chat.id, link)
+
+
+@bot.message_handler(func=lambda message: True, commands=['ban'])
+def ban_user(message):
+    user_id = message.user.id
+    chat_id = message.chat.id
+    bot.kick_chat_member(chat_id, user_id)
+    banned_users.append([chat_id, user_id])
+    t = Timer(300.0, unban_user)
+    t.start()
+
+
+@bot.message_handler(func=lambda message: True, commands=['unban'])
+def manual_unban_user(message):
+    bot.unban_chat_member(message.chat.id, message.user.id)
+
+
+def unban_user():
+    if len(banned_users) > 0:
+        ban = banned_users[0]
+        bot.unban_chat_member(ban[0], ban[1])
+        banned_users.pop(ban)
 
 
 bot.remove_webhook()
