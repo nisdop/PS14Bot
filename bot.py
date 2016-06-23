@@ -55,7 +55,7 @@ def send_tits(message):
     bot.send_message(message.chat.id, link)
 
 
-@bot.message_handler(func=lambda message: True, commands=['/ban'])
+@bot.message_handler(func=lambda message: True, commands=['ban'])
 def ban_user(message):
     user_id = message.user.id
     chat_id = message.chat.id
@@ -65,7 +65,7 @@ def ban_user(message):
     t.start()
 
 
-@bot.message_handler(func=lambda message: True, commands=['/unban'])
+@bot.message_handler(func=lambda message: True, commands=['unban'])
 def manual_unban_user(message):
     bot.unban_chat_member(message.chat.id, message.user.id)
 
