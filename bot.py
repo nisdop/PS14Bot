@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import datetime
-import random
 from urllib import request
 
 import telebot
@@ -46,9 +45,9 @@ def send_tits(message):
     random_tits_url = 'http://boobs-selfshots.tumblr.com/random'
     response = request.urlopen(random_tits_url)
     html = response.read()
-    soup = BeautifulSoup(html)
-    img = soup.findAll('img', {'alt': 'boobs-selfshots.tumblr.com'})
-    link = img[0]['src']
+    soup = BeautifulSoup(html, "html.parser")
+    img = soup.findAll('div', {'class': 'photo_post'})[0].a.img
+    link = img['src']
     bot.send_message(message.chat.id, link)
 
 
