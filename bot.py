@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
+import time
 from urllib import request
 
 import telebot
@@ -41,7 +42,13 @@ def send_tits(message):
     else:
         img = soup.findAll('div', {'class': 'photo_post'})[0].img
     link = img['src']
+    log_action(message, response=link)
     bot.send_message(message.chat.id, link)
 
 
-
+def log_action(message, response=None):
+    user = "{};{};{};{}".format(message.from_user.id, message.from_user.first_name,
+                                message.from_user.last_name, message.from_user.username)
+    text = "{};{};{};{}\n".format(int(time.time()), user, message.text[1:], response)
+    with open('/home/ubuntu/bot.log', 'a+') as f:
+        f.write(text)
