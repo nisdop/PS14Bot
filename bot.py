@@ -35,7 +35,11 @@ def send_tits(message):
     response = request.urlopen(random_tits_url)
     html = response.read()
     soup = BeautifulSoup(html, "html.parser")
-    img = soup.findAll('div', {'class': 'photo_post'})[0].a.img
+    a_tag = soup.findAll('div', {'class': 'photo_post'})[0].a
+    if a_tag is not None:
+        img = a_tag.img
+    else:
+        img = soup.findAll('div', {'class': 'photo_post'})[0].img
     link = img['src']
     bot.send_message(message.chat.id, link)
 
